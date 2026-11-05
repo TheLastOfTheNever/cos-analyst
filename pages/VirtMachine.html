@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Учебная симуляция учетных записей и виртуальных рабочих мест пользователей и технического администратора.">
+  <title>SOC Academy — Виртуальная машина</title>
+  <link rel="stylesheet" href="../css/soc-simulation.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="../index.html"><span class="brand-mark">◈</span>SOC Academy</a>
+    <nav class="site-nav" aria-label="Навигация">
+      <a href="profession.html">Профессия</a>
+      <a href="program.html">Программа</a>
+      <a href="networks.html">Сети</a>
+      <a href="protocols.html">Протоколы</a>
+      <a href="lab.html">Лаборатория</a>
+      <a href="portfolio.html">Портфолио</a>
+      <a href="APIBLOGS.html">Блоги</a>
+      <a class="active" href="VirtMachine.html">Виртуальная машина</a>
+    </nav>
+  </header>
+
+  <main class="simulator">
+    <section class="page-intro">
+      <h1>Виртуальная машина</h1>
+      <p>Данная страница имитирует работу учетных записей в организации и демонстрирует работу пользователей и технического администратора.</p>
+    </section>
+
+    <section class="login-panel" id="loginScreen" aria-labelledby="loginTitle">
+      <div class="login-card">
+        <h2 id="loginTitle">Выбрать пользователя</h2>
+        <p class="muted">Выберите рабочее место</p>
+        <form id="loginForm" class="login-form">
+          <label for="roleSelect">Пользователь</label>
+          <select id="roleSelect" name="role" required></select>
+          <label for="loginPassword">Пароль</label>
+          <input id="loginPassword" name="password" type="password" autocomplete="off" required>
+          <p class="form-error" id="loginError" role="alert" hidden></p>
+          <button class="primary-button" type="submit">Войти</button>
+        </form>
+        <p class="demo-hint" id="demoHint"></p>
+      </div>
+    </section>
+
+    <section id="adminScreen" class="workspace" hidden aria-label="Рабочее место SOC-администратора">
+      <div class="workspace-heading">
+        <div>
+          <p class="eyebrow">SOC CONSOLE · ANALYST WORKSTATION</p>
+          <h2>Рабочее место администратора</h2>
+        </div>
+        <button class="subtle-button" type="button" data-action="logout">Выйти</button>
+      </div>
+      <div class="desktop admin-desktop" id="adminDesktop">
+        <div class="desktop-topline">
+          <span>◈ SOC-ADMIN-01 <span class="online-dot"></span> локальная учебная среда</span>
+          <span class="desktop-clock" data-clock></span>
+        </div>
+        <div class="desktop-icons" aria-label="Приложения администратора">
+          <button class="desktop-icon" type="button" data-open-app="remote"><span>🖥️</span><strong>Remote Access</strong></button>
+          <button class="desktop-icon" type="button" data-open-app="network"><span>📡</span><strong>Network Monitor</strong></button>
+          <button class="desktop-icon" type="button" data-open-app="programs"><span>📦</span><strong>Programs</strong></button>
+          <button class="desktop-icon" type="button" data-open-app="notes"><span>📝</span><strong>SOC Notes</strong></button>
+        </div>
+        <div class="desktop-windows" id="adminWindows" aria-live="polite"></div>
+        <div class="taskbar">
+          <span class="taskbar-brand">◈ SOC-ADMIN-01</span>
+          <span class="taskbar-spacer"></span>
+          <a class="user-mode-button" href="VirtMachine.html?mode=client" target="_blank" rel="noopener">＋ Открыть окно пользователя</a>
+          <span class="taskbar-clock" data-clock></span>
+        </div>
+      </div>
+      <p class="safety-note">Учебная симуляция: экран ПК виден администратору только после подключения. Реальные компьютеры, VPN, сеть и процессы не используются.</p>
+    </section>
+
+    <section id="clientScreen" class="workspace client-workspace" hidden aria-label="Рабочее место выбранного пользователя">
+      <div class="workspace-heading">
+        <div>
+          <p class="eyebrow">VIRTUAL CLIENT WORKSTATION</p>
+          <h2 id="clientHeading">Рабочее место пользователя</h2>
+        </div>
+        <button class="subtle-button" type="button" data-action="logout">Выйти</button>
+      </div>
+      <div class="desktop client-desktop" id="clientDesktop">
+        <div class="desktop-topline">
+          <span id="clientDeviceLabel"></span>
+          <span class="desktop-clock" data-clock></span>
+        </div>
+        <div class="client-status" id="clientStatus" aria-live="polite"></div>
+        <div class="client-icons">
+          <button class="desktop-icon" type="button" data-client-action="browser"><span>🌐</span><strong>Браузер</strong></button>
+          <button class="desktop-icon" type="button" data-client-action="vpn"><span>🔐</span><strong>VPN Client</strong></button>
+          <button class="desktop-icon" type="button" data-client-action="program"><span>📦</span><strong>Запущенные программы</strong></button>
+        </div>
+        <div class="desktop-windows client-windows" id="clientWindows" aria-live="polite"></div>
+        <section class="client-start-menu" id="clientStartMenu" aria-label="Меню Пуск" hidden>
+          <nav class="start-menu-rail" aria-label="Системные действия">
+            <button type="button" data-start-panel="users" aria-label="Сменить пользователя" title="Сменить пользователя">♙</button>
+            <button type="button" data-start-panel="settings" aria-label="Настройки" title="Настройки">⚙</button>
+            <button type="button" data-start-panel="power" aria-label="Питание" title="Питание">⏻</button>
+          </nav>
+          <div class="start-menu-main">
+            <h3>Недавно использованные</h3>
+            <div class="recent-users" id="recentUsers"></div>
+            <button class="all-users-button" type="button" data-start-action="all-users">Все пользователи</button>
+            <h3 class="start-apps-heading">Приложения</h3>
+            <div class="start-app-list">
+              <button type="button" data-client-action="browser"><span>🌐</span><strong>Браузер</strong></button>
+              <button type="button" data-client-action="vpn"><span>🔐</span><strong>VPN Client</strong></button>
+              <button type="button" data-client-action="program"><span>📦</span><strong>Запущенные программы</strong></button>
+            </div>
+          </div>
+          <section class="start-flyout" id="startPowerFlyout" hidden aria-label="Действия питания">
+            <button type="button" data-start-action="shutdown">Выключить виртуальную машину</button>
+            <button type="button" data-start-action="restart">Перезагрузить</button>
+          </section>
+          <section class="start-flyout start-message-flyout" id="startSettingsFlyout" hidden aria-live="polite">
+            Мне было лень это реализовывать
+          </section>
+          <section class="start-flyout start-users-flyout" id="startUsersFlyout" hidden aria-label="Сменить пользователя">
+            <h3>Недавно использованные</h3>
+            <div class="recent-users" id="recentUsersFlyout"></div>
+            <button type="button" data-start-action="sign-out">Выйти из пользователя</button>
+            <button type="button" data-start-action="all-users">Все пользователи</button>
+          </section>
+        </section>
+        <section class="tray-panel calendar-panel" id="calendarPanel" hidden aria-label="Календарь">
+          <div class="calendar-current">
+            <time data-calendar-time></time>
+            <span data-calendar-date></span>
+          </div>
+          <div class="calendar-month-heading">
+            <strong data-calendar-month></strong>
+            <div>
+              <button type="button" data-calendar-step="-1" aria-label="Предыдущий месяц">‹</button>
+              <button type="button" data-calendar-step="1" aria-label="Следующий месяц">›</button>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </section>
+        <section class="tray-panel" id="internetPanel" hidden aria-label="Состояние сети">
+          <strong>Интернет</strong>
+          <p id="internetStatus">Учебное подключение активно</p>
+          <button type="button" data-tray-action="toggle-internet">Отключить</button>
+        </section>
+        <section class="tray-panel sound-panel" id="soundPanel" hidden aria-label="Настройки звука">
+          <label for="volumeControl">Громкость</label>
+          <input id="volumeControl" type="range" min="0" max="100" value="65">
+          <button type="button" data-tray-action="toggle-mute">Выключить звук</button>
+        </section>
+        <section class="tray-panel layout-panel" id="layoutPanel" hidden aria-label="Раскладка клавиатуры">
+          <strong>Раскладка клавиатуры</strong>
+          <button type="button" data-tray-action="toggle-layout">Русский · RU</button>
+        </section>
+        <div class="reboot-screen" id="rebootScreen" hidden aria-live="assertive">
+          <span id="rebootMessage">Перезагрузка виртуальной машины…</span>
+        </div>
+        <div class="shutdown-screen" id="shutdownScreen" hidden aria-live="assertive">
+          <div>
+            <p id="shutdownMessage">Выключение виртуальной машины…</p>
+            <button type="button" data-close-tab hidden>Закрыть вкладку</button>
+          </div>
+        </div>
+        <div class="taskbar client-taskbar">
+          <button class="start-button" id="clientStartButton" type="button" aria-label="Пуск" aria-expanded="false" aria-controls="clientStartMenu">SH</button>
+          <div class="taskbar-apps" id="clientTaskbarApps"></div>
+          <span class="taskbar-spacer"></span>
+          <span class="client-lock-status" id="clientLockStatus"></span>
+          <button class="tray-button" type="button" data-tray-toggle="internetPanel" aria-label="Интернет" title="Интернет">◉</button>
+          <button class="tray-button" type="button" data-tray-toggle="soundPanel" aria-label="Звук" title="Звук">🔊</button>
+          <button class="tray-button layout-toggle" type="button" data-tray-toggle="layoutPanel" aria-label="Раскладка клавиатуры" title="Раскладка">RU</button>
+          <time class="client-taskbar-datetime" aria-label="Текущее время и дата">
+            <span data-taskbar-time></span>
+            <span data-taskbar-date></span>
+          </time>
+        </div>
+        <button class="calendar-hit-area" type="button" data-calendar-toggle aria-label="Открыть календарь и часы"></button>
+      </div>
+      <p class="safety-note">Виртуальное устройство изолировано: кнопки создают только синтетические записи и не открывают внешние сайты.</p>
+    </section>
+
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+  </main>
+
+  <footer class="site-footer">SOC Academy · учебный стенд Security Operations</footer>
+  <script src="../js/VirtMachine.js"></script>
+</body>
+</html>
