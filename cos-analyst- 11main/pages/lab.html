@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SOC Academy — лаборатория</title>
+    <link rel="stylesheet" href="../css/style.css">
+  </head>
+  <body>
+    <header class="nav">
+      <div class="wrap">
+        <a class="brand" href="../index.html"><i>◈</i>SOC Academy</a>
+        <nav class="links">
+          <a href="profession.html">Профессия</a>
+          <a class="active" href="lab.html">Лаборатория</a>
+          <a href="portfolio.html">Портфолио</a>
+        
+          <a href="APIBLOGS.html">Блоги</a>
+          <a href="VirtMachine.html">Виртуальная машина</a>
+        </nav>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="wrap">
+          <div class="kicker">Учебная лаборатория</div>
+          <h1>Анализатор <span>сетевых пакетов</span></h1>
+          <p class="lead">Безопасный симулятор телеметрии: он генерирует только синтетические данные на этой странице. Это не Wireshark и не захват реального трафика, а тренажёр для понимания пакетов, фильтров и расследования.</p>
+        </div>
+      </section>
+      <section>
+        <div class="wrap lab-grid">
+          <div>
+            <div class="wireshark">
+              <div class="ws-bar">SOC Packet Lab · синтетический поток · <span id="counter">0</span> пакетов</div>
+              <div class="filter"><input id="filter" placeholder="Фильтр: dns | tcp | http | ip.addr == 10.10.5.24 | tcp.port == 443">
+                <button id="apply">Применить</button>
+              </div>
+              <div class="packets" id="packets"></div>
+              <div class="detail" id="detail">Выбери пакет, чтобы увидеть его учебное описание.</div>
+            </div>
+            <p class="hint">Поддерживаемые фильтры: <code>dns</code>, <code>tcp</code>, <code>udp</code>, <code>http</code>, <code>tls</code>, <code>ip.addr == IP</code>, <code>tcp.port == ЧИСЛО</code>, <code>udp.port == ЧИСЛО</code>. Генерация меняет только учебные записи.</p>
+          </div>
+          <aside class="console">
+            <h3 style="margin-top:0">Учебная консоль</h3>
+            <div class="console-output" id="out">SOC Packet Lab v1.0
+Введите help для списка безопасных команд.</div><input id="cmd" autocomplete="off" placeholder="например: help">
+            <p class="hint">Это имитация командной строки. Она ничего не запускает на компьютере и не выполняет сетевые запросы.</p>
+          </aside>
+        </div>
+      </section>
+      <section class="surface">
+        <div class="wrap">
+          <h2 class="title">Как тренироваться</h2>
+          <div class="grid3">
+            <article class="card">
+              <h3>1. Отфильтруй</h3>
+              <p>Набери <code>dns</code>, затем <code>tcp.port == 443</code>. Посмотри, как меняется набор событий.</p>
+            </article>
+            <article class="card">
+              <h3>2. Изучи контекст</h3>
+              <p>Выбери строку и выпиши источники, назначения, порт, протокол и краткое описание.</p>
+            </article>
+            <article class="card">
+              <h3>3. Проверь гипотезу</h3>
+              <p>Регулярные TLS-сессии или редкий DNS-домен — это повод собрать данные, а не назвать активность вредоносной без доказательств.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap"><b>SOC Academy</b>
+        <p>Синтетические данные · безопасный учебный тренажёр.</p>
+      </div>
+    </footer>
+    <script src="../js/lab.js"></script>
+    <script src="../js/academy-navigation.js"></script>
+  </body>
+</html>
